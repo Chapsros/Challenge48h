@@ -22,8 +22,8 @@ contract votingSystem{
 
     uint public totalVoter = 0;
     uint public totalVote = 0;
-    address public ballotOfficialAddress;      
-    string public ballotOfficialName;
+    address public ownerOfficialAddress;      
+    string public ownerOfficialName;
     string[3] public proposal; //question de base
     
     mapping(uint => vote) private votes;
@@ -32,29 +32,23 @@ contract votingSystem{
     enum State { Created, Voting, Ended }
 	State public state;
 	
-	//creates a new ballot contract
+	//creates a new owner contract
 	constructor(
-        string memory _ballotOfficialName,
+        string memory _ownerOfficialName,
         string memory _proposal1,
         string memory _proposal2,
         string memory _proposal3) public {
-        ballotOfficialAddress = msg.sender;
-        ballotOfficialName = _ballotOfficialName;
+        ownerOfficialAddress = msg.sender;
+        ownerOfficialName = _ownerOfficialName;
         proposal[0] = _proposal1;
         proposal[1] = _proposal2;
         proposal[2] = _proposal3;
         
         state = State.Created;
     }
-    
-    
-	modifier condition(bool _condition) {
-		require(_condition);
-		_;
-	}
 
 	modifier onlyOfficial() {
-		require(msg.sender ==ballotOfficialAddress);
+		require(msg.sender == ownerOfficialAddress);
 		_;
 	}
 
@@ -114,7 +108,7 @@ contract votingSystem{
             else if(_choice == "2"){
                 countChar2++;
             }
-            else{
+            else if(_choice == "3"){
                 countChar3++;
             }
             countResult++;
