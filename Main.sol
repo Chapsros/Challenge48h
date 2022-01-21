@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
 contract votingSystem{
     //le tableau bord
     struct vote{
         address voterAddress; //l'adresse de la personne qui vote 
-        string choice;//la reponse qu'il a choisi
+        uint choice;//la reponse qu'il a choisi
     }
     //la personne qui vote
     struct voter{
@@ -37,7 +38,7 @@ contract votingSystem{
         string memory _ownerOfficialName,
         string memory _proposal1,
         string memory _proposal2,
-        string memory _proposal3) public {
+        string memory _proposal3) {
         ownerOfficialAddress = msg.sender;
         ownerOfficialName = _ownerOfficialName;
         proposal[0] = _proposal1;
@@ -87,7 +88,7 @@ contract votingSystem{
     }
 
     //voters vote by indicating their choice 
-    function doVote(string memory _choice)
+    function doVote(uint _choice)
         public
         inState(State.Voting)
         returns (bool voted)
@@ -102,16 +103,15 @@ contract votingSystem{
             v.choice = _choice;
 
             //different checks
-            if(_choice == "1"){
+            if(_choice == 1){
                 countChar1++;
             }
-            else if(_choice == "2"){
+            else if(_choice == 2){
                 countChar2++;
             }
-            else if(_choice == "3"){
+            else if(_choice == 3){
                 countChar3++;
             }
-            countResult++;
 
             votes[totalVote] = v;
             totalVote++;
